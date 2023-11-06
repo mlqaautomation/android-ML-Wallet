@@ -23,11 +23,22 @@ public abstract class BaseClass {
     public static LoggingUtils logger = new LoggingUtils();
     private int timeout;
     private int retryCount;
-
+    public static String osName=System.getProperty("os.name").toLowerCase();
     public static SoftAssert softAssert = new SoftAssert();
-    public static PropertyFileReader prop = new PropertyFileReader(".\\properties\\testdata.properties");
-    public static PropertyFileReader tierProp = new PropertyFileReader(".\\properties\\tierUpgrade.properties");
-    public static PropertyFileReader shopProp = new PropertyFileReader(".\\properties\\mlshop.properties");
+    public static PropertyFileReader prop;
+    public static PropertyFileReader tierProp;
+    public static PropertyFileReader shopProp;
+    public void propertyFileReader(){
+        if(osName.contains("mac") || osName.contains("linux")){
+            prop = new PropertyFileReader(".//properties//testdata.properties");
+            tierProp = new PropertyFileReader(".//properties//tierUpgrade.properties");
+            shopProp = new PropertyFileReader(".//properties//mlshop.properties");
+        }else {
+            prop = new PropertyFileReader(".\\properties\\testdata.properties");
+            tierProp = new PropertyFileReader(".\\properties\\tierUpgrade.properties");
+            shopProp = new PropertyFileReader(".\\properties\\mlshop.properties");
+        }
+    }
     public BaseClass(){
 
     }
@@ -76,14 +87,6 @@ public abstract class BaseClass {
         }
     }
     public void enterOTP(String OTP) throws Exception {
-//		explicitWaitVisible(MLWalletLoginPage.objOneTimePin, 5);
-//		verifyElementPresent(MLWalletLoginPage.objOneTimePin, getTextVal(MLWalletLoginPage.objOneTimePin, "Page"));
-//		verifyElementPresent(MLWalletLoginPage.objOtpTextField, "OTP text Field");
-//		Thread.sleep(3000);
-//		for(int i=1;i<=6;i++) {
-//			type(MLWalletLoginPage.objOtpTextField(i), OTP, "OTP Text Field");
-//		}
-
         waitTime(5000);
         if (verifyElementDisplayed(MLWalletLoginPage.objContinueBtn)) {
             click(MLWalletLoginPage.objContinueBtn, "OTP Continue Button");
